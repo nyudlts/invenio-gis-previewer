@@ -20,11 +20,5 @@ blueprint = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
+"""Blueprint used to register template and static folders."""
 
-
-@blueprint.route("/")
-def index():
-    """Render a basic view."""
-    return render_template(
-        "invenio_gis_previewer/index.html",
-        module_name=_('invenio-gis-previewer'))

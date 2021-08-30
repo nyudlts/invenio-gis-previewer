@@ -1,0 +1,65 @@
+{%- extends config.PREVIEWER_ABSTRACT_TEMPLATE %}
+
+{% block panel %}
+  <div class="container">
+    <div class="col-md-2 col-md-offset-3">
+      <div id="map" style="width: 500px; height: 500px;"></div>
+      <script>
+        window.addEventListener('load', function() {
+          // if this is just a coverage or a group of them, disable a few items,
+          // and default to jpeg format
+          var format = 'image/png';
+          var bounds = [913495.0279306406, 121175.04780325491,
+            1067169.0895071623, 271876.08903873217];  // TODO: Get from API from JavaScript
+
+          var mousePositionControl = new ol.control.MousePosition({
+            className: 'custom-mouse-position',
+            target: document.getElementById('location'),
+            coordinateFormat: ol.coordinate.createStringXY(5),
+            undefinedHTML: '&nbsp;'
+          });
+
+          var tiled = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+              url: 'https://localhost:9091/geoserver/invenio/wms',
+              params: {'FORMAT': format,
+                'VERSION': '1.1.1',
+                tiled: true,
+                "STYLES": '',
+                "LAYERS": 'invenio:real_property_sales_nyc_2015', // TODO: Put this in template from gis.py
+                "exceptions": 'application/vnd.ogc.se_inimage',
+                tilesOrigin: 913495.0279306406 + "," + 121175.04780325491
+              }
+            })
+          });
+          var projection = new ol.proj.Projection({
+            code: 'EPSG:3857',
+            units: 'm',
+            global: false
+          });
+          var osm = new ol.layer.Tile({
+            source: new ol.source.OSM({
+              projection: 'EPSG:3857',
+            }),
+          });
+          var map = new ol.Map({
+            controls: ol.control.defaults({
+              attribution: false
+            }).extend([mousePositionControl]),
+            target: 'map',
+            layers: [
+              osm,
+              tiled
+            ],
+            view: new ol.View({
+              projection: projection
+            })
+          });
+
+          map.getView().fit(bounds, map.getSize());
+        });
+      </script>
+
+    </div>
+  </div>
+{% endblock %}

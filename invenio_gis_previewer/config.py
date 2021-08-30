@@ -8,11 +8,7 @@
 
 """Invenio module for interacting with GeoServer in order to render GIS data."""
 
-# TODO: This is an example file. Remove it if your package does not use any
-# extra configuration variables.
+# TODO: add necessary configurations
 
-INVENIO_GIS_PREVIEWER_DEFAULT_VALUE = 'foobar'
-"""Default value for the application."""
-
-INVENIO_GIS_PREVIEWER_BASE_TEMPLATE = 'invenio_gis_previewer/base.html'
-"""Default base template for the demo page."""
+GEOSERVER_API_PREFIX = '/geoserver/rest/'
+"""URL prefix to GeoServer API."""

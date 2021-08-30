@@ -71,6 +71,12 @@ setup(
         'invenio_i18n.translations': [
             'messages = invenio_gis_previewer',
         ],
+        'invenio_assets.webpack': {
+            'invenio_gis_previewer_theme = invenio_gis_previewer.webpack:previewer'
+        },
+        'invenio_previewer.previewers': [
+            'gis = invenio_gis_previewer.previewer',
+        ],
         # TODO: Edit these entry points to fit your needs.
         # 'invenio_access.actions': [],
         # 'invenio_admin.actions': [],

@@ -11,6 +11,7 @@
 from flask_babelex import gettext as _
 
 from . import config
+from .views import blueprint
 
 
 class InvenioGISPreviewer(object):
@@ -28,6 +29,7 @@ class InvenioGISPreviewer(object):
     def init_app(self, app):
         """Flask application initialization."""
         self.init_config(app)
+        app.register_blueprint(blueprint)
         app.extensions['invenio-gis-previewer'] = self
 
     def init_config(self, app):
