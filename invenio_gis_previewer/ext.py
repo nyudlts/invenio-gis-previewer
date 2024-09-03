@@ -9,8 +9,11 @@
 """Invenio module for interacting with GeoServer in order to render GIS data."""
 
 from flask_babelex import gettext as _
+from invenio_drafts_resources.services import RecordService, RecordServiceConfig
+from invenio_records_resources.services import FileService
 
 from . import config
+from .config import GISFileRecordServiceConfig
 from .views import blueprint
 
 
@@ -19,16 +22,13 @@ class InvenioGISPreviewer(object):
 
     def __init__(self, app=None):
         """Extension initialization."""
-        # TODO: This is an example of translation string with comment. Please
-        # remove it.
-        # NOTE: This is a note to a translator.
-        _('A translation string')
         if app:
             self.init_app(app)
 
     def init_app(self, app):
         """Flask application initialization."""
         self.init_config(app)
+        self.init_services(app)
         app.register_blueprint(blueprint)
         app.extensions['invenio-gis-previewer'] = self
 
@@ -43,3 +43,11 @@ class InvenioGISPreviewer(object):
         for k in dir(config):
             if k.startswith('INVENIO_GIS_PREVIEWER_'):
                 app.config.setdefault(k, getattr(config, k))
+
+    def init_services(self, app):
+        """Initialize service to send files to GeoServer."""
+        # Services
+        self.records_service = RecordService(
+            RecordServiceConfig,
+            files_service=FileService(GISFileRecordServiceConfig),
+        )

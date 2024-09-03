@@ -8,7 +8,18 @@
 
 """Invenio module for interacting with GeoServer in order to render GIS data."""
 
+from invenio_records_resources.services import FileServiceConfig
+
+from invenio_gis_previewer.gis_file_processor import GeoServerUploader
+
+
 # TODO: add necessary configurations
 
 GEOSERVER_API_PREFIX = '/geoserver/rest/'
 """URL prefix to GeoServer API."""
+
+
+class GISFileRecordServiceConfig(FileServiceConfig):
+    file_processors = FileServiceConfig.file_processors + [
+        GeoServerUploader(),
+    ]
